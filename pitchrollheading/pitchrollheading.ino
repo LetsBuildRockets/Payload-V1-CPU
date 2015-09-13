@@ -51,6 +51,8 @@ void setup(void)
   Serial.begin(115200);
   Serial.println(F("Adafruit 10 DOF Pitch/Roll/Heading Example")); 
   Serial.println("");
+  
+  pinMode(4,OUTPUT);
 
   /* Initialise the sensors */
   initSensors();
@@ -107,6 +109,7 @@ void loop(void)
   }
 
   Serial.println("}");
-  delay(1000);
+  delay(100);
+  digitalWrite(4,millis()%1000<100);
 }
 

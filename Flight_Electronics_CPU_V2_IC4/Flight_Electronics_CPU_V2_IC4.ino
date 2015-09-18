@@ -73,25 +73,24 @@ void loop(void)
 
   /* Calculate pitch and roll from the raw accelerometer data */
   accel.getEvent(&accel_event);
-  if (dof.accelGetOrientation(&accel_event, &orientation))
+  mag.getEvent(&mag_event);
+  if (dof.fusionGetOrientation(&accel_event, &mag_event, &orientation))
   {
     /* 'orientation' should have valid .roll and .pitch fields */
     Serial.print("\"roll\": ");
     Serial.print(orientation.roll);
     Serial.print(", \"pitch\": ");
     Serial.print(orientation.pitch);
-  }
-
-  /* Calculate the heading using the magnetometer */
-  mag.getEvent(&mag_event);
-  if (dof.magGetOrientation(SENSOR_AXIS_Z, &mag_event, &orientation))
-  {
-    /* 'orientation' should have valid .heading data now */
-
     Serial.print(", \"heading\": ");
     Serial.print(orientation.heading);
+    Serial.print(", \"xLin\": ");
+    Serial.print(accel_event.acceleration.x);
+    Serial.print(", \"yLin\": ");
+    Serial.print(accel_event.acceleration.y);
+    Serial.print(", \"zLin\": ");
+    Serial.print(accel_event.acceleration.z);
   }
-
+  
   /* Calculate the altitude using the barometric pressure sensor */
   bmp.getEvent(&bmp_event);
   if (bmp_event.pressure)
